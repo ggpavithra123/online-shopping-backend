@@ -1,23 +1,23 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
+// Routes
 const productRoutes = require("./routes/product");
 const authRoutes = require("./routes/auth");
 const paymentRoutes = require("./routes/payment");
-const order = require("./routes/order");
+const orderRoutes = require("./routes/order");
+
+// Middleware
 const errorMiddleware = require("./middlewares/error");
-const cookieParser = require("cookie-parser");
-//const fileUpload = require("express-fileupload");
 
-//app.use(express.json());
-
+// CORS configuration
 app.use(
   cors({
     origin: [
       "https://onlineshoppingfrontend.vercel.app",
       "https://online-shopping-frontend-xi.vercel.app",
-      
       "http://localhost:3001",
       "http://127.0.0.1:3000",
     ],
@@ -26,16 +26,18 @@ app.use(
   }),
 );
 
+// Body & cookie parsing
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use(fileUpload());
+
+// API Routes
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", authRoutes);
-app.use("/api/v1", order);
+app.use("/api/v1", orderRoutes);
 app.use("/api/v1", paymentRoutes);
 
+// Error handler (ALWAYS LAST)
 app.use(errorMiddleware);
-//app.use(express.urlencoded({ extended: true }))
 
 module.exports = app;

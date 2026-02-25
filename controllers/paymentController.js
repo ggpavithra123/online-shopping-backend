@@ -20,8 +20,4 @@ exports.sendStripeApi  = catchAsyncError(async(req, res, next) => {
     res.status(200).json({
         stripeApiKey: process.env.STRIPE_API_KEY
     })
-<<<<<<< HEAD
 })
-=======
-})
->>>>>>> 0c6c65cb15ea0d3ce65c17475199cd5400d9d865
