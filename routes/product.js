@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const {isAuthenticatedUser, authorizeRoles} = require('../middlewares/authenticate');
 const { getAllProducts,newProduct, getSingleProduct, updateProduct, deleteProduct,getAdminProducts, createProductReview,getReviews,deleteReview} = require('../controllers/productController'); 
+const path = require('path');
+const multer = require('multer');
+
+const upload = multer({storage: multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, path.join( __dirname,'..' , 'uploads/product' ) )
+    },
+    filename: function(req, file, cb ) {
+        cb(null, file.originalname)
+    }
+}) })
 
 router.route('/products').get(getAllProducts);
 //router.route('/product/new').post(isAuthenticatedUser,authorizeRoles('admin'),newProduct);
