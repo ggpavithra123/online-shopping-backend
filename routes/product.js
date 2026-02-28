@@ -27,6 +27,7 @@ router.route('/review').delete(isAuthenticatedUser, authorizeRoles('admin'),dele
 router.route('/product/new')
   .post(
     isAuthenticatedUser,
+    authorizeRoles('admin'),
     upload.array('images'),   // 🔥 IMPORTANT
     newProduct
   );
