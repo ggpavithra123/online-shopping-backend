@@ -24,7 +24,13 @@ router.route('/reviews').get(isAuthenticatedUser, getReviews);
 router.route('/review').delete(isAuthenticatedUser, authorizeRoles('admin'),deleteReview)
 
 //Admin routes
-router.route('/admin/product/new').post(isAuthenticatedUser, authorizeRoles('admin'), newProduct);
+router.route('/product/new')
+  .post(
+    isAuthenticatedUser,
+    upload.array('images'),   // 🔥 IMPORTANT
+    newProduct
+  );
+//router.route('/admin/product/new').post(isAuthenticatedUser, authorizeRoles('admin'), newProduct);
 router.route('/admin/products').get(isAuthenticatedUser, authorizeRoles('admin'), getAdminProducts);
 router.route('/admin/product/:id').delete(isAuthenticatedUser, authorizeRoles('admin'), deleteProduct);
 router.route('/admin/product/:id').put(isAuthenticatedUser, authorizeRoles('admin'),upload.array('images'), updateProduct);
