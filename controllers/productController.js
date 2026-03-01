@@ -148,16 +148,23 @@ exports.createProductReview = catchAsyncError(async (req, res, next) => {
     });
 });
 
-//Get Reviews - api/v1/reviews?id={productId}
-exports.getReviews = catchAsyncError(async (req, res, next) =>{
-    const product = await Product.findById(req.query.id).populate('reviews.user','name email');
+exports.getReviews = async (req, res) => {
+
+    const product = await Product.findById(req.query.id)
+        .populate("reviews.user", "name"); // ✅ IMPORTANT
+
+    if (!product) {
+        return res.status(404).json({
+            success: false,
+            message: "Product not found"
+        });
+    }
 
     res.status(200).json({
         success: true,
         reviews: product.reviews
-    })
-});
-
+    });
+};
 //Delete Review - api/v1/review
 exports.deleteReview = catchAsyncError(async (req, res, next) =>{
     const product = await Product.findById(req.query.productId);
