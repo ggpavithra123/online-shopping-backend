@@ -81,8 +81,8 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler('You have already delivered this order', 400));
     }
 
-    // ✅ Update stock ONLY when delivering
-    if (req.body.status === 'Delivered') {
+    // 🔥 use orderStatus instead of status
+    if (req.body.orderStatus === 'Delivered') {
         for (const item of order.orderItems) {
             await updateStock(item.product, item.quantity);
         }
@@ -90,8 +90,8 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
         order.deliveredAt = Date.now();
     }
 
-    // ✅ Update order status
-    order.orderStatus = req.body.status;
+    // 🔥 FIX HERE
+    order.orderStatus = req.body.orderStatus;
 
     console.log("ORDER STATUS AFTER 👉", order.orderStatus);
 
@@ -101,8 +101,8 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
         success: true,
         order
     });
-
 });
+
 async function updateStock(id, quantity) {
     console.log("Updating stock for Product ID 👉", id);
     console.log("Quantity to reduce 👉", quantity);
